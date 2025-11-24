@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models.product import Category
-from app.schemas.product import CategoryCreate
+from app.models.product import Category, Product
+from app.schemas.product import CategoryCreate, ProductCreate
 
 def create_category(db: Session, category: CategoryCreate):
     db_obj = Category(name=category.name)
