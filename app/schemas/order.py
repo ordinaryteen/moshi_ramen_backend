@@ -35,16 +35,19 @@ class OrderItemResponse(BaseModel):
 
 class OrderResponse(BaseModel):
     id: UUID
-    order_number: int
-    bill_name: Optional[str]
+    
+    order_number: Optional[int] = None 
+    
     staff_id: int
+    bill_name: Optional[str]
     status: OrderStatus
-    date_utc: datetime
-
+    
+    created_at: datetime 
+    
     sub_total: Decimal
     tax_amount: Decimal
     grand_total: Decimal
-
-    items: List[OrderItemResponse]
+    
+    items: List[OrderItemResponse] 
 
     model_config = ConfigDict(from_attributes=True)

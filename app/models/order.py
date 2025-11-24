@@ -27,7 +27,7 @@ class Order(Base):
     status = Column(Enum(OrderStatus), default=OrderStatus.PENDING)
     created_at = Column(DateTime, default=datetime.utcnow)
     
-    staff = relationship("app.models.user.User", back_populates="orders")
+    staff = relationship("User", back_populates="orders")
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
 class OrderItem(Base):
@@ -45,4 +45,4 @@ class OrderItem(Base):
     sub_total_item = Column(Numeric(10, 2), nullable=False)
     
     order = relationship("Order", back_populates="items")
-    product = relationship("app.models.product.Product") 
+    product = relationship("Product") 

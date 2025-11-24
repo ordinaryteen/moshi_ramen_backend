@@ -1,10 +1,12 @@
 from sqlalchemy.orm import Session
 from app.models.order import Order, OrderItem, OrderStatus
 from app.models.product import Product
+from app.models.user import User
 from app.schemas.order import OrderCreate
 from fastapi import HTTPException
+from decimal import Decimal
 
-TAX_RATE = 0.15 
+TAX_RATE = Decimal("0.15")
 
 def create_order(db: Session, order_in: OrderCreate):
     sub_total_accumulated = 0
