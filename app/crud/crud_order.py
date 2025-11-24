@@ -4,6 +4,8 @@ from app.models.product import Product
 from app.schemas.order import OrderCreate
 from fastapi import HTTPException
 
+TAX_RATE = 0.15 
+
 def create_order(db: Session, order_in: OrderCreate):
     sub_total_accumulated = 0
     db_items = []
@@ -37,7 +39,6 @@ def create_order(db: Session, order_in: OrderCreate):
         sub_total_accumulated += item_sub_total
 
     # 3. Calculate Tax & Grand Total
-    TAX_RATE = 0.15 
     tax_amount = sub_total_accumulated * TAX_RATE
     grand_total = sub_total_accumulated + tax_amount
     
