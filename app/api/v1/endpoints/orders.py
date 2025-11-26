@@ -4,6 +4,7 @@ from app.core.database import get_db
 from app.crud import crud_order
 from app.schemas.order import OrderCreate, OrderResponse
 from app.websockets.manager import manager
+from app.schemas.order import OrderStatusUpdate
 from app.api.v1 import deps 
 import json
 
@@ -30,3 +31,17 @@ async def create_new_order(order: OrderCreate, db: Session = Depends(get_db), cu
     
     return new_order
 
+@router.patch("/orders/{order_id}/status", response_model=OrderResponse)
+async def update_order_status(order_id: str, status_update: OrderStatusUpdate, db: Session = Depends(get_db), current_user: User = Depends(deps.get_current_user)):
+    updated_order = crud_order.update_status(db=db, order_id=order_id, new_status=status_update.status)
+    if not updated_order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    await manager.broadcast({
+        "event": "STATUS_UPDATE",
+        "order_id": str(updated_order.id),
+        "new_status": updated_order.status.value,
+        "bill_name": updated_order.bill_name
+    })
+
+    return updated_order
