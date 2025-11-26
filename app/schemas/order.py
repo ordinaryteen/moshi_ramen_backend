@@ -18,7 +18,7 @@ class OrderItemCreate(BaseModel):
 
 # --- ORDER SCHEMA (Input dari User) ---
 class OrderCreate(BaseModel):
-    staff_id: int
+    staff_id: Optional[int] = None
     bill_name: Optional[str] = None 
     items: List[OrderItemCreate]
 
