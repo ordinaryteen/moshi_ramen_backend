@@ -66,3 +66,20 @@ def create_order(db: Session, order_in: OrderCreate):
     db.refresh(db_order)
     
     return db_order
+
+
+def update_status(db: Session, order_id: str, new_status: OrderStatus):
+    # 1. Fetch Order
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        return None
+    
+    # 2. State Validation 
+    if order.status in [OrderStatus.COMPLETED, OrderStatus.CANCELLED]:
+        raise HTTPException(status_code=400, detail="Cannot update finished order")
+    
+    # 3. Update
+    order.status = new_status
+    db.commit()
+    db.refresh(order)
+    return order
