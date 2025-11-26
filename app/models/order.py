@@ -7,8 +7,10 @@ from datetime import datetime
 from app.core.database import Base
 
 class OrderStatus(str, enum.Enum):
-    PENDING = "PENDING"
-    PAID = "PAID"
+    PENDING = "PENDING"      
+    COOKING = "COOKING"      
+    READY = "READY"          
+    COMPLETED = "COMPLETED"  
     CANCELLED = "CANCELLED"
 
 class Order(Base):
