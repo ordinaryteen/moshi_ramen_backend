@@ -4,7 +4,7 @@ from app.core.database import get_db
 from app.crud import crud_order
 from app.schemas.order import OrderCreate, OrderResponse
 from app.websockets.manager import manager
-from app.api import deps 
+from app.api.v1 import deps 
 import json
 
 router = APIRouter()
