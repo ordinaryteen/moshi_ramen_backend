@@ -5,7 +5,8 @@ from app.crud import crud_order
 from app.schemas.order import OrderCreate, OrderResponse
 from app.websockets.manager import manager
 from app.schemas.order import OrderStatusUpdate
-from app.api.v1 import deps 
+from app.api.v1 import deps
+from app.models.user import User 
 import json
 
 router = APIRouter()

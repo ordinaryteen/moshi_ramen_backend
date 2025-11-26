@@ -8,7 +8,9 @@ from enum import Enum
 # Enum Status (Harus sama kayak di Model)
 class OrderStatus(str, Enum):
     PENDING = "PENDING"
-    PAID = "PAID"
+    COOKING = "COOKING"      
+    READY = "READY"          
+    COMPLETED = "COMPLETED"  
     CANCELLED = "CANCELLED"
 
 # --- ITEM SCHEMA (Input dari User) ---
