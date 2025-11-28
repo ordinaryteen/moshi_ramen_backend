@@ -1,38 +1,43 @@
 from app.core.database import SessionLocal, engine, Base
 from app.models.product import Category, Product
-from app.models.user import User, Role # Import User & Role buat seed user sekalian
-from app.core.security import get_password_hash # Buat hash password
+from app.models.user import User, Role
+# TAMBAHAN PENTING: Import Order biar ikut kehapus
+from app.models.order import Order, OrderItem 
+from app.core.security import get_password_hash
 from decimal import Decimal
 
 db = SessionLocal()
 
 def seed():
     print("☢️  MENGHANCURKAN DATABASE LAMA (DROP ALL)...")
-    Base.metadata.drop_all(bind=engine) # Hapus semua tabel
+    # Sekarang karena Order sudah diimport, dia bakal dihapus duluan sebelum User
+    Base.metadata.drop_all(bind=engine) 
+    
     print("🏗️  MEMBANGUN ULANG TABEL (CREATE ALL)...")
-    Base.metadata.create_all(bind=engine) # Bikin tabel baru dengan kolom image_url
+    Base.metadata.create_all(bind=engine)
 
     print("🌱 Mulai menanam benih data...")
 
-    # 1. Bikin Role & User (Biar gak manual lagi di SQL)
+    # --- 1. SETUP USER & ROLE ---
     role_admin = Role(role_name="admin")
     role_cashier = Role(role_name="cashier")
     role_kitchen = Role(role_name="kitchen")
     db.add_all([role_admin, role_cashier, role_kitchen])
     db.commit()
 
-    # User Ami
+    # User Ami (Kasir)
     user_ami = User(
         username="ami", 
         email="ami@moshi.com",
         hashed_password=get_password_hash("123456"),
-        role_id=role_cashier.id
+        role_id=role_cashier.id,
+        is_active=True
     )
     db.add(user_ami)
     db.commit()
     print("✅ User 'ami' (pass: 123456) berhasil dibuat.")
 
-    # 2. Bikin KATEGORI
+    # --- 2. SETUP MENU ---
     cat_makanan = Category(name="Signature Ramen")
     cat_snack = Category(name="Snacks & Sides")
     cat_minuman = Category(name="Refreshments")
@@ -44,7 +49,7 @@ def seed():
     db.refresh(cat_snack)
     db.refresh(cat_minuman)
 
-    # 3. Bikin PRODUK (Dengan Gambar)
+    # Produk dengan Gambar HD
     products = [
         Product(
             name="Spicy Beef Ramen", 
