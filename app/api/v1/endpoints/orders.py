@@ -25,7 +25,15 @@ async def create_new_order(order: OrderCreate, db: Session = Depends(get_db), cu
         "event": "NEW_ORDER",
         "order_id": str(new_order.id),
         "bill_name": new_order.bill_name,
-        "total": float(new_order.grand_total) 
+        "total": float(new_order.grand_total),
+        "items": [
+            {
+                "name": item.item_name_snapshot,
+                "qty": item.quantity,
+                "note": "Pedas" 
+            } 
+            for item in new_order.items
+        ]
     }
 
     await manager.broadcast(notification_data)

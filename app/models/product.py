@@ -23,6 +23,7 @@ class Product(Base):
     
     unit_price = Column(Numeric(10, 2), nullable=False) 
     stock = Column(Integer, default=0)
+    image_url = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
     
     category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id"))

@@ -14,7 +14,17 @@ def login_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordR
     """
     OAuth2 compatible token login, get an access token for future requests.
     """
+    print(f"DEBUG: Login attempt for username: '{form_data.username}'")
+    print(f"DEBUG: Password received: '{form_data.password}'")
+    
     user = db.query(User).filter(User.username == form_data.username).first()
+    
+    if not user:
+        print("DEBUG: User not found in DB")
+    else:
+        is_password_correct = verify_password(form_data.password, user.hashed_password)
+        print(f"DEBUG: User found. Hash in DB: {user.hashed_password[:10]}...")
+        print(f"DEBUG: Password match result: {is_password_correct}")
     
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
