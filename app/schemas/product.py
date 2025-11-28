@@ -23,6 +23,7 @@ class ProductBase(BaseModel):
     stock: int = 0
     is_active: bool = True
     category_id: UUID
+    image_url: Optional[str] = None
 
 class ProductCreate(ProductBase):
     pass
