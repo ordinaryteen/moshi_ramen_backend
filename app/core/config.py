@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Moshi Ramen Backend"
     API_V1_STR: str = "/api/v1"
     
+    # Optional
     DB_HOST: Optional[str] = None
     DB_PORT: Optional[str] = None
     DB_USER: Optional[str] = None
